@@ -4,7 +4,8 @@
   "description": "mapping file tree",
   "main": "index.js",
   "scripts": {
-    "test": "mocha test/**/*.js"
+    "test": "mocha test/**/*.js",
+    "cover": "istanbul cover _mocha"
   },
   "repository": {
     "type": "git",
@@ -27,6 +28,9 @@
     "promisify-node": "^0.4.0"
   },
   "devDependencies": {
-    "mocha": "^3.0.2"
+    "coveralls": "^2.11.14",
+    "istanbul": "^0.4.5",
+    "mocha": "^3.0.2",
+    "mocha-lcov-reporter": "^1.2.0"
   }
 }
