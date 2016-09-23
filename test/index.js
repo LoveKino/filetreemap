@@ -1,5 +1,7 @@
 'use strict';
 
+let assert = require('assert');
+
 let {
     toDisk
 } = require('..');
@@ -68,5 +70,55 @@ describe('index', () => {
             type: 'symbolicLink',
             content: tmp
         }, test5);
+    });
+
+    it('object', () => {
+        const test6 = path.join(fixture, 'test6');
+        return toDisk({
+            content: {
+                name: 'ddchen'
+            }
+        }, test6);
+    });
+
+    it('error type', (done) => {
+        const test7 = path.join(fixture, 'test7');
+        toDisk({
+            type: 'fake'
+        }, test7).catch((err) => {
+            assert.equal(err.toString().indexOf('fileObject type') !== -1, true);
+            done();
+        });
+    });
+
+    it('maxIOs', () => {
+        const test8 = path.join(fixture, 'test8');
+        return toDisk({
+            type: 'directory',
+            files: {
+                a: {
+                    content: 1
+                },
+                b: {
+                    content: 2
+                },
+                c: {
+                    content: 3
+                },
+                d: {
+                    type: 'directory',
+                    files: {
+                        e: {
+                            content: 4
+                        },
+                        f: {
+                            content: 5
+                        }
+                    }
+                }
+            }
+        }, test8);
+    }, {
+        maxIOs: 1
     });
 });

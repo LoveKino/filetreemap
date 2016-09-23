@@ -10,15 +10,16 @@
  *      <name>: fileObject
  *    }
  * }
+ *
+ * TODO
+ *  1. get file object from disk
+ *  2. diff
  */
 let promisify = require('promisify-node');
 let fs = promisify('fs');
 let del = require('del');
 let path = require('path');
 
-/**
- * TODO concurrent ios
- */
 let toDisk = (fileObject, root, opts = {}) => {
     return del([root]).then(() => {
         return mapToDisk(fileObject, root, ioOper(opts));
@@ -31,8 +32,7 @@ let ioOper = ({
     let concurrent = 0;
     let ioQueue = [];
     let runFn = () => {
-        if (!ioQueue.length) return;
-        if (concurrent > maxIOs) return;
+        if (!ioQueue.length || concurrent > maxIOs) return;
 
         let [fn, args, resolve, reject] = ioQueue.shift();
         concurrent++;
@@ -73,6 +73,9 @@ let mapToDisk = ({
             }
             return Promise.all(ps);
         });
+    } else {
+        let err = new Error(`unexpected fileObject type ${type}`);
+        return Promise.reject(err);
     }
 };
 
