@@ -14,6 +14,8 @@
  * TODO
  *  1. get file object from disk
  *  2. diff
+ *  3. copy dir
+ *  4. DSL for fs
  */
 let promisify = require('promisify-node');
 let fs = promisify('fs');
